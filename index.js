@@ -2,7 +2,10 @@ const express = require("express");
 const mongodb = require("mongodb");
 const bodyParser = require("body-parser");
 const app = express();
+const cors = require("cors");
+
 app.use(bodyParser.json());
+app.use(cors());
 
 const mongoURL =
     "mongodb+srv://vishal:vishal@cluster1.xhmhh.mongodb.net/movies?retryWrites=true&w=majority";
@@ -17,13 +20,15 @@ app.get("/getAllMovie", async function (req, res) {
         console.log(err);
     }
 });
-app.post("/getSingleMovie", async function (req, res) {
+app.get("/getSingleMovie", async function (req, res) {
+    const query = req.query.movieName.slice(1, -1);
     try {
         let client = await mongodb.connect(mongoURL);
         let db = client.db("movies");
+        console.log(query);
         let data = await db
             .collection("movies")
-            .find({ title: req.body.title })
+            .find({ title: query })
             .toArray();
         res.json(data);
     } catch (err) {
