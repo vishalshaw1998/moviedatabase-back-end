@@ -50,19 +50,23 @@ app.get("/getById/:id", async (req, res) => {
     }
 });
 app.post("/addMovie", async (req, res) => {
-    let client = await mongodb.connect(mongoURL);
-    let db = client.db("movies");
-    let data = await db.collection("movies").insertOne(req.body);
-    let insertedData = await db
-        .collection("movies")
-        .find({})
-        .sort({ _id: -1 })
-        .limit(1)
-        .toArray();
-    console.log(req.body);
-    res.json({
-        insertedData: insertedData,
-    });
+    try {
+        let client = await mongodb.connect(mongoURL);
+        let db = client.db("movies");
+        let data = await db.collection("movies").insertOne(req.body);
+        let insertedData = await db
+            .collection("movies")
+            .find({})
+            .sort({ _id: -1 })
+            .limit(1)
+            .toArray();
+        console.log(req.body);
+        res.json({
+            insertedData: insertedData,
+        });
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 const PORT = process.env.PORT || 3000;
