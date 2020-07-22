@@ -11,7 +11,7 @@ app.get("/getAllMovie", async function (req, res) {
     try {
         let client = await mongodb.connect(mongoURL);
         let db = client.db("movies");
-        let data = await db.collection("movies").find();
+        let data = await db.collection("movies").find().toArray();
         res.json(data);
     } catch (err) {
         console.log(err);
