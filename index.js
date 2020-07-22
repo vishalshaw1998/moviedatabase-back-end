@@ -17,7 +17,7 @@ app.get("/getAllMovie", async function (req, res) {
         console.log(err);
     }
 });
-app.get("/getSingleMovie", async function (req, res) {
+app.post("/getSingleMovie", async function (req, res) {
     try {
         let client = await mongodb.connect(mongoURL);
         let db = client.db("movies");
